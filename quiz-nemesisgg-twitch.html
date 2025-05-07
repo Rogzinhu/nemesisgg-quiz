@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>NêmesisGG - Escolha sua Facção</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+    .resultado {
+      display: block !important;
+      white-space: pre-wrap;
+      font-weight: bold;
+      font-size: 22px;
+      margin-top: 20px;
+      padding: 10px;
+      background: #1e1e1e;
+      border-radius: 10px;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-left: 10px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    input[type="text"] {
+      padding: 8px;
+      width: 100%;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>NêmesisGG: Descubra sua Facção</h1>
+  <form id="quizForm">
+    <input type="text" name="nome" placeholder="Seu nome no jogo" required />
+    <input type="text" name="twitch" placeholder="Link da sua Twitch (opcional)" />
+
+    <div class="question">
+      <p>1. Você acha que a magia é:</p>
+      <label><input type="radio" name="q1" value="eterios" required /> A base de tudo</label>
+      <label><input type="radio" name="q1" value="arquivistas" /> Uma força a ser entendida</label>
+      <label><input type="radio" name="q1" value="ferronatos" /> Um perigo instável</label>
+    </div>
+
+    <div class="question">
+      <p>2. A tecnologia antiga deve ser:</p>
+      <label><input type="radio" name="q2" value="ferronatos" required /> Recuperada e aprimorada</label>
+      <label><input type="radio" name="q2" value="arquivistas" /> Estudada com cautela</label>
+      <label><input type="radio" name="q2" value="eterios" /> Esquecida para sempre</label>
+    </div>
+
+    <div class="question">
+      <p>3. Qual dessas frases mais combina com você?</p>
+      <label><input type="radio" name="q3" value="ferronatos" required /> Somente o aço reconstrói</label>
+      <label><input type="radio" name="q3" value="eterios" /> Tudo vibra. Tudo sente.</label>
+      <label><input type="radio" name="q3" value="arquivistas" /> Entre extremos, há sabedoria.</label>
+    </div>
+
+    <div class="question">
+      <p>4. Em um mundo em ruínas, o que é mais importante?</p>
+      <label><input type="radio" name="q4" value="ferronatos" required /> Reconstruir com eficiência</label>
+      <label><input type="radio" name="q4" value="eterios" /> Viver em harmonia com o mundo</label>
+      <label><input type="radio" name="q4" value="arquivistas" /> Entender o que deu errado</label>
+    </div>
+
+    <div class="question">
+      <p>5. O Fragmento desperta dentro de você. O que você sente?</p>
+      <label><input type="radio" name="q5" value="eterios" required /> Uma conexão profunda com tudo</label>
+      <label><input type="radio" name="q5" value="ferronatos" /> Medo do que ele pode causar</label>
+      <label><input type="radio" name="q5" value="arquivistas" /> Curiosidade sobre sua origem</label>
+    </div>
+
+    <button type="submit">Ver minha facção</button>
+  </form>
+
+  <div class="resultado" id="resultado"></div>
+
+  <script>
+    document.getElementById("quizForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      const nome = formData.get("nome");
+      const twitch = formData.get("twitch");
+      const respostas = Object.fromEntries(formData.entries());
+      const contagem = { ferronatos: 0, eterios: 0, arquivistas: 0 };
+
+      for (let i = 1; i <= 5; i++) contagem[respostas["q" + i]]++;
+
+      const vencedor = Object.keys(contagem).reduce((a, b) => contagem[a] > contagem[b] ? a : b);
+
+      const resultadoEl = document.getElementById("resultado");
+      resultadoEl.textContent = `✅ Você pertence à facção: ${vencedor.toUpperCase()}`;
+      resultadoEl.style.display = "block";
+
+      const dados = {
+        username: "Quiz NemesisGG",
+        embeds: [{
+          title: "Novo jogador respondeu ao questionário!",
+          fields: [
+            { name: "👤 Nome do jogador", value: nome, inline: true },
+            { name: "🏳️ Facção", value: vencedor.toUpperCase(), inline: true },
+            { name: "📺 Twitch", value: twitch ? twitch : "Não informado", inline: false }
+          ],
+          color: 7506394,
+          timestamp: new Date().toISOString()
+        }]
+      };
+
+      try {
+        await fetch("https://discord.com/api/webhooks/1369495262485151744/FeUI8IfdyEZDgZl55TCMP7Zzmo36kMKH_0aKAXU3BUWmvY9dm76hPzG-Ol0zsDWfa9ju", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dados)
+        });
+      } catch (err) {
+        console.error("Erro ao enviar para o Discord:", err);
+      }
+    });
+  </script>
+</body>
+</html>
