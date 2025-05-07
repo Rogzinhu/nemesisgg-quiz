@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Questionário de Facções</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🧠 Qual Facção é a Sua?</h1>
+    <form id="quiz-form">
+      <label>Nome (obrigatório):</label>
+      <input type="text" name="nome" required />
+
+      <label>Link do seu canal da Twitch (opcional):</label>
+      <input type="url" name="twitch" placeholder="https://twitch.tv/seucanal" />
+
+      <label>Qual frase combina mais com você?</label>
+      <select name="frase" required>
+        <option value="Toda jogada tem uma intenção.">Toda jogada tem uma intenção.</option>
+        <option value="Primeiro bato, depois pergunto.">Primeiro bato, depois pergunto.</option>
+        <option value="Ninguém suspeita do silencioso.">Ninguém suspeita do silencioso.</option>
+        <option value="Tudo sob controle.">Tudo sob controle.</option>
+        <option value="Confusão é minha zona de conforto.">Confusão é minha zona de conforto.</option>
+      </select>
+
+      <div id="questions"></div>
+      <button type="submit">Enviar</button>
+    </form>
+    <div id="result"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
